@@ -13,12 +13,6 @@ export const Header = styled.View`
   background-color: ${({ theme }) => theme.colors.header};
 
   justify-content: flex-end;
-`;
-
-export const TotalCars = styled.Text`
-  font-size: ${RFValue(15)};
-  font-family: ${({ theme }) => theme.fonts.primary_400};
-  color: ${({ theme }) => theme.colors.text};
   padding: 32px 24px;
 `;
 
@@ -27,3 +21,16 @@ export const HeaderContent = styled.View`
   align-items: center;
   justify-content: space-between; ;
 `;
+
+export const TotalCars = styled.Text`
+  font-size: ${RFValue(15)}px;
+  font-family: ${({ theme }) => theme.fonts.primary_400};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+export const CarList = styled.FlatList.attrs({
+  contentContainerStyle: {
+    padding: 24
+  },
+  showsVerticalScrollIndicator: false
+})``;
