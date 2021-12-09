@@ -5,8 +5,15 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 import Logo from "../../assets/logo.svg";
 import { Car } from "../../components/Car";
+import { useNavigation } from "@react-navigation/native";
+
+interface NavigatorProps {
+  navigate: (screen: string) => void;
+}
 
 export const Home = () => {
+  const navigation = useNavigation<NavigatorProps>();
+
   const dataCar = {
     brand: "Audi",
     name: "RS5 couque",
@@ -16,6 +23,10 @@ export const Home = () => {
     },
     thumbnail:
       "https://e7.pngegg.com/pngimages/215/409/png-clipart-audi-audi.png"
+  };
+
+  const handleCarDetails = () => {
+    navigation.navigate("CarDetails");
   };
 
   return (
@@ -35,7 +46,9 @@ export const Home = () => {
       <CarList
         data={[1, 2, 3]}
         keyExtractor={item => String(item)}
-        renderItem={({ item }) => <Car data={dataCar} />}
+        renderItem={({ item }) => (
+          <Car data={dataCar} onPress={handleCarDetails} />
+        )}
       />
     </Container>
   );

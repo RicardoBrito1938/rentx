@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/": "react-navigation/native",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
     "@types/react-native-calendars": "^1.1264.3",

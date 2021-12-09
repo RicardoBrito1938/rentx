@@ -27,8 +27,19 @@ import {
   Footer
 } from "./styles";
 import { Button } from "../../components/Button";
+import { useNavigation } from "@react-navigation/native";
 
-export const CardDetails = () => {
+interface NavigatorProps {
+  navigate: (screen: string) => void;
+}
+
+export const CarDetails = () => {
+  const navigation = useNavigation<NavigatorProps>();
+
+  const handleConfirmRental = () => {
+    navigation.navigate("Scheduling");
+  };
+
   return (
     <Container>
       <Header>
@@ -80,7 +91,10 @@ export const CardDetails = () => {
       </Content>
 
       <Footer>
-        <Button title="confirmar" />
+        <Button
+          title="Escolher período do aluguel"
+          onPress={handleConfirmRental}
+        />
       </Footer>
     </Container>
   );
