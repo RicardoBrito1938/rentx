@@ -5,7 +5,7 @@ interface ImageIndexProps {
   active: boolean;
 }
 export const Container = styled.View`
-  flex: 1;
+  width: 100%;
 `;
 
 export const ImageIndexes = styled.View`
@@ -26,7 +26,7 @@ export const ImageIndex = styled.View<ImageIndexProps>`
 `;
 
 export const CarImageWrapper = styled.View`
-  width: ${Dimensions.get("window").width};
+  width: ${Dimensions.get("window").width}px;
   height: 132px;
 
   justify-content: center;
