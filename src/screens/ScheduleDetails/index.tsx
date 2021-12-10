@@ -76,6 +76,17 @@ export const ScheduleDetails = () => {
         ...scheduleByCar.data.unavailable_dates,
         ...datesKeysList
       ];
+
+      await api.post("schedules_byuser", {
+        user_id: 1,
+        car,
+        startDate: format(addDays(new Date(datesKeysList[0]), 1), "dd/MM/yyyy"),
+        endDate: format(
+          addDays(new Date(datesKeysList[datesKeysList.length - 1]), 1),
+          "dd/MM/yyyy"
+        )
+      });
+
       api
         .put(`/schedules_bycars/${car.id}`, {
           id: car.id,
