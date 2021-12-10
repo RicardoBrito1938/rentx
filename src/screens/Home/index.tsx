@@ -12,7 +12,7 @@ import { CarDTO } from "../../dtos/CarDTO";
 import { Loading } from "../../components/Loading";
 
 interface NavigatorProps {
-  navigate: (screen: string) => void;
+  navigate: (screen: string, params?: object) => void;
 }
 
 export const Home = () => {
@@ -20,8 +20,8 @@ export const Home = () => {
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleCarDetails = () => {
-    navigation.navigate("CarDetails");
+  const handleCarDetails = (car: CarDTO) => {
+    navigation.navigate("CarDetails", { car });
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const Home = () => {
           data={cars}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <Car data={item} onPress={handleCarDetails} />
+            <Car data={item} onPress={() => handleCarDetails(item)} />
           )}
         />
       )}
