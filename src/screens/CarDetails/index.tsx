@@ -26,7 +26,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { CarDTO } from "../../dtos/CarDTO";
 
 interface NavigatorProps {
-  navigate: (screen: string) => void;
+  navigate: (screen: string, params?: any) => void;
   goBack: () => void;
 }
 
@@ -40,7 +40,7 @@ export const CarDetails = () => {
   const { car } = route.params as Params;
 
   const handleConfirmRental = () => {
-    navigation.navigate("Scheduling");
+    navigation.navigate("Scheduling", { car });
   };
 
   const handleBack = () => {
