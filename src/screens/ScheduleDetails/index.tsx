@@ -57,6 +57,7 @@ interface RentalPeriod {
 }
 
 export const ScheduleDetails = () => {
+  const [loading, setLoading] = useState(false);
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
     {} as RentalPeriod
   );
@@ -70,6 +71,7 @@ export const ScheduleDetails = () => {
   const rentTotal = Number(datesKeysList.length * car.rent.price);
 
   const handleConfirmRental = async () => {
+    setLoading(true);
     try {
       const scheduleByCar = await api.get(`schedules_bycars/${car.id}`);
       const unavailable_dates = [
@@ -96,6 +98,8 @@ export const ScheduleDetails = () => {
         .catch(() => Alert.alert("Não foi possível confirmar o agendamento"));
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -194,6 +198,8 @@ export const ScheduleDetails = () => {
           title="Alugar agora"
           color={theme.colors.success}
           onPress={handleConfirmRental}
+          enabled={!loading}
+          loading={loading}
         />
       </Footer>
     </Container>
