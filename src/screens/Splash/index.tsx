@@ -4,15 +4,22 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
-  withTiming
+  withTiming,
+  runOnJS
 } from "react-native-reanimated";
 import { Container } from "./styles";
 
 import BrandSvg from "../../assets/brand.svg";
 import LogoSvg from "../../assets/logo.svg";
+import { useNavigation } from "@react-navigation/native";
+
+interface NavigationProps {
+  navigate: (screen: string) => void;
+}
 
 export const Splash = () => {
   const splashAnimation = useSharedValue(0);
+  const navigation = useNavigation<NavigationProps>();
 
   const brandStyle = useAnimatedStyle(() => {
     return {
@@ -46,8 +53,15 @@ export const Splash = () => {
     };
   });
 
+  const startApp = () => {
+    navigation.navigate("Home");
+  };
+
   useEffect(() => {
-    splashAnimation.value = withTiming(50, { duration: 1000 });
+    splashAnimation.value = withTiming(50, { duration: 1000 }, () => {
+      "worked";
+      runOnJS(startApp)();
+    });
   }, []);
 
   return (
