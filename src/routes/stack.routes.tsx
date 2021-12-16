@@ -13,7 +13,11 @@ const { Navigator, Screen } = createNativeStackNavigator();
 export const StackRoutes = () => {
   return (
     <Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
-      <Screen name="Splash" component={Splash} />
+      <Screen
+        name="Splash"
+        component={Splash}
+        options={{ gestureEnabled: false }}
+      />
       <Screen name="Home" component={Home} />
       <Screen name="CarDetails" component={CarDetails} />
       <Screen name="Scheduling" component={Scheduling} />
