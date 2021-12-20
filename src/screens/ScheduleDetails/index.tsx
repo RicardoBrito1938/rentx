@@ -42,7 +42,7 @@ import api from "../../services/api";
 import { Alert } from "react-native";
 
 interface NavigatorProps {
-  navigate: (screen: string) => void;
+  navigate: (screen: string, params?: any) => void;
   goBack: () => void;
 }
 
@@ -94,7 +94,15 @@ export const ScheduleDetails = () => {
           id: car.id,
           unavailable_dates
         })
-        .then(() => navigation.navigate("SchedulingComplete"))
+        .then(() =>
+          navigation.navigate("Confirmation", {
+            nextScreenRoute: "Home",
+            title: "Carro alugado",
+            message: `Agora você só precisa ir\n
+            até a concessionária da rentX \n
+            pegar o seu automóvel`
+          })
+        )
         .catch(() => Alert.alert("Não foi possível confirmar o agendamento"));
     } catch (error) {
       console.log(error);

@@ -7,13 +7,19 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 import { useTheme } from "styled-components";
-import { Button } from "../components/Button";
-import { Input } from "../components/Input";
-import { PasswordInput } from "../components/PasswordInput";
+import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
+import { PasswordInput } from "../../components/PasswordInput";
 import { Container, Header, SubTitle, Title, Footer, Form } from "./styles";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
+
+interface NavigationProps {
+  navigate: (screen: string) => void;
+}
 
 export const SignIn = () => {
+  const navigation = useNavigation<NavigationProps>();
   const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +42,10 @@ export const SignIn = () => {
         Alert.alert("Erro na autenticação, verifique suas credenciais");
       }
     }
+  };
+
+  const handleNewAccount = () => {
+    navigation.navigate("FirstStep");
   };
 
   return (
@@ -85,9 +95,9 @@ export const SignIn = () => {
             <Button
               title="Criar conta gratuita"
               color={theme.colors.background_secondary}
-              onPress={() => {}}
+              onPress={handleNewAccount}
               light
-              enabled={false}
+              enabled={true}
               loading={false}
             />
           </Footer>
