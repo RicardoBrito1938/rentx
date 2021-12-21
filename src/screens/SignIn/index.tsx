@@ -94,7 +94,7 @@ export const SignIn = () => {
             <Button
               title="Login"
               onPress={handleSignIn}
-              enabled={false}
+              enabled={true}
               loading={false}
             />
             <Button

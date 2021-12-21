@@ -1,4 +1,4 @@
-import { BackHandler, StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Container, Header, TotalCars, HeaderContent, CarList } from "./styles";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -92,12 +92,6 @@ export const Home = () => {
     fetchCars();
   }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", () => {
-      return true;
-    });
-  }, []);
-
   return (
     <Container>
       <StatusBar
@@ -124,7 +118,7 @@ export const Home = () => {
         />
       )}
 
-      <PanGestureHandler onGestureEvent={onGestureEvent}>
+      {/* <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View
           style={[
             myCarsButtonStyle,
@@ -142,7 +136,7 @@ export const Home = () => {
             />
           </ButtonAnimated>
         </Animated.View>
-      </PanGestureHandler>
+      </PanGestureHandler> */}
     </Container>
   );
 };
