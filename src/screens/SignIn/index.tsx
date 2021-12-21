@@ -13,6 +13,7 @@ import { PasswordInput } from "../../components/PasswordInput";
 import { Container, Header, SubTitle, Title, Footer, Form } from "./styles";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 interface NavigationProps {
   navigate: (screen: string) => void;
@@ -20,6 +21,8 @@ interface NavigationProps {
 
 export const SignIn = () => {
   const navigation = useNavigation<NavigationProps>();
+  const { signIn, user } = useAuth();
+
   const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +38,8 @@ export const SignIn = () => {
 
       await schema.validate({ email, password });
       Alert.alert("Tudo certo!");
+
+      signIn({ email, password });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert("Opa", error.message);
