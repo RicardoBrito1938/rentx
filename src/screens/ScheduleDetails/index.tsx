@@ -40,6 +40,7 @@ import { CalendarProps } from "react-native-calendars";
 import { addDays, format } from "date-fns";
 import api from "../../services/api";
 import { Alert } from "react-native";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 interface NavigatorProps {
   navigate: (screen: string, params?: any) => void;
@@ -57,6 +58,9 @@ interface RentalPeriod {
 }
 
 export const ScheduleDetails = () => {
+  const netInfo = useNetInfo();
+  const [carUpdated, setCarUpdated] = useState<CarDTO>({} as CarDTO);
+
   const [loading, setLoading] = useState(false);
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
     {} as RentalPeriod
@@ -73,26 +77,13 @@ export const ScheduleDetails = () => {
   const handleConfirmRental = async () => {
     setLoading(true);
     try {
-      const scheduleByCar = await api.get(`schedules_bycars/${car.id}`);
-      const unavailable_dates = [
-        ...scheduleByCar.data.unavailable_dates,
-        ...datesKeysList
-      ];
-
-      await api.post("schedules_byuser", {
-        user_id: 1,
-        car,
-        startDate: format(addDays(new Date(datesKeysList[0]), 1), "dd/MM/yyyy"),
-        endDate: format(
-          addDays(new Date(datesKeysList[datesKeysList.length - 1]), 1),
-          "dd/MM/yyyy"
-        )
-      });
-
-      api
-        .put(`/schedules_bycars/${car.id}`, {
-          id: car.id,
-          unavailable_dates
+      await api
+        .post("rentals", {
+          user_id: 1,
+          car_id: car.id,
+          start_date: new Date(datesKeysList[0]),
+          end_date: new Date(datesKeysList[datesKeysList.length - 1]),
+          total: rentTotal
         })
         .then(() =>
           navigation.navigate("Confirmation", {
@@ -125,6 +116,16 @@ export const ScheduleDetails = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const fetchCardUpdated = async () => {
+      const response = await api.get(`/cars/${car.id}`);
+      setCarUpdated(response.data);
+    };
+    if (netInfo.isConnected === true) {
+      fetchCardUpdated();
+    }
+  }, [netInfo.isConnected]);
+
   return (
     <Container>
       <Header>
@@ -132,7 +133,13 @@ export const ScheduleDetails = () => {
       </Header>
 
       <CarImages>
-        <ImageSlider imagesUrl={car.photos} />
+        <ImageSlider
+          imagesUrl={
+            !!carUpdated.photos
+              ? carUpdated.photos
+              : [{ id: car.thumbnail, photo: car.thumbnail }]
+          }
+        />
       </CarImages>
 
       <Content
@@ -154,15 +161,17 @@ export const ScheduleDetails = () => {
           </Rent>
         </Details>
 
-        <Accessories>
-          {car.accessories.map(accessory => (
-            <Accessory
-              key={accessory.type}
-              name={accessory.name}
-              icon={getAccessoryIcon(accessory.type)}
-            />
-          ))}
-        </Accessories>
+        {carUpdated.accessories && (
+          <Accessories>
+            {carUpdated.accessories.map(accessory => (
+              <Accessory
+                key={accessory.type}
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type)}
+              />
+            ))}
+          </Accessories>
+        )}
 
         <RentalPeriod>
           <CalendarIcon>

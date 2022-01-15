@@ -21,6 +21,7 @@ import {
 } from "./styles";
 import { Input } from "../../components/Input";
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback
@@ -28,6 +29,7 @@ import {
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { PasswordInput } from "../../components/PasswordInput";
 import { useAuth } from "../../hooks/auth";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 interface UseNavigation {
   navigate: (screen: string) => void;
@@ -36,6 +38,7 @@ interface UseNavigation {
 
 export const Profile = () => {
   const theme = useTheme();
+  const netInfo = useNetInfo();
   const { user, signOut } = useAuth();
   const navigation = useNavigation<UseNavigation>();
 
@@ -49,7 +52,14 @@ export const Profile = () => {
   };
 
   const handleOptionChange = (newOption: "dataEdit" | "passwordEdit") => {
-    setOption(newOption);
+    if (netInfo.isConnected === false && newOption === "passwordEdit") {
+      Alert.alert(
+        "Você está offline",
+        "para mudar a senha conecte-se a internet"
+      );
+    } else {
+      setOption(newOption);
+    }
   };
 
   const handleSignOut = () => {
